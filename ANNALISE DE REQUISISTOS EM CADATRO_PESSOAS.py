@@ -1,56 +1,131 @@
+import mysql.connector 
+
 pessoas=dict()#criado o dicionario que deve receber as variaveis
-lista=list()#criado a ista que vai receber os dicionarios
-soma=media=0 #ebreviaçã das funções soma e media em um so linha
-type(pessoas)
-while True: #laco pricipal que deve repetir todo o processo
-  pessoas['nome'] = input('Digite o nome: ').upper()#o dicionario na posição nome recebe um input
 
-  while True:# laco para receber e tratar a variavel nome
-    pessoas['sexo'] = input('Digite o sexo da pessoa M/F:').upper()[0]
-    if pessoas['sexo'] in 'F/M':#abreviação para tratar a entrada(se pessoa naposiç~~ao sexo contem as iniciais m ou f )
-      break #recebe m ou f e para
-    else:
-      print('Escolha entre as opções M/F: ') # se nao esta entre m ou f volta ao laco
+def conexao():
+  conectar=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    database="cadastro_pessoas")
+  
+  cursor = conectar.cursor()
+  return conectar,cursor
+
+def criar_tabela(cursor):
+  cursor.execute("CREATE DATABASE IF NOT EXISTS cadastro_pessoas")
+  cursor.execute("USE cadastro_pessoas")
+  cursor.execute("""
+  CREATE TABLE IF NOT EXISTS pessoas(
+      id_pessoa INT AUTO_INCREMENT NOT NULL,
+      nome VARCHAR(50) NOT NULL,
+      sexo VARCHAR(2) NOT NULL,
+      idade INT NOT NULL,
+      PRIMARY KEY (id_pessoa))
+  """)
+  
+def inserir_pessoa(cursor, conectar, pessoa):
+  print('inserindo')
+  cursor.execute("INSERT INTO pessoas (nome, sexo, idade) VALUES (%s, %s, %s)", 
+                  (pessoa['nome'], pessoa['sexo'], pessoa['idade']))
+  conectar.commit()
+  print('inserido')
+
+def contar_pessoa(cursor):
+  cursor.execute("SELECT COUNT(*) FROM pessoas")
+  return cursor.fetchone()[0]
+
+def lista_sexo(cursor ,sexo):
+  cursor.execute("select nome from pessoas where sexo = %s", (sexo,))
+  return cursor.fetchall()
+
+def media_idade(cursor):
+  cursor.execute("select avg(idade) from pessoas")
+  return cursor.fetchone()[0]
+
+def id_pessoa(cursor, id_pessoa):
+  cursor.execute("select * from pessoas where id_pessoa=%s",(id_pessoa,))
+  return cursor.fetchone()
+
+def id_por_pessoa():
   while True:
-    try:# ´precisa tratar tambem os erros para valor nao numericos
-      pessoas['idade'] =int(input('Em qual ano nasceu?: '))#entrad acom o ano de nacimento
-      pessoas['idade']=(2023-pessoas['idade'])#calculo da idade do candidato par armazenar apena a idade
-      soma+=pessoas['idade']#adição de soma com o numerador especial que ler o dicionario pessoas na posição idade e pega o valos inteiro
-      break
+    try:
+      pessoa_id = int(input('\n0-Sair\ndigite o ID da pessoa para ver todas as informações: '))
+      if pessoa_id == 0:
+        
+          break
+      pessoa = id_pessoa(cursor, pessoa_id)
+      if pessoa:
+          print(f'\nInformações da pessoa com ID {pessoa_id}:')
+          print(f'ID: {pessoa[0]}')
+          print(f'Nome: {pessoa[1]}')
+          print(f'Sexo: {pessoa[2]}')
+          print(f'Idade: {pessoa[3]}')
+      else:
+          print(f'Pessoa com ID {pessoa_id} não encontrada.')
     except ValueError:
-      print('Digite um valor numerico: ')
-      continue#retornao ao inicio do laço e pergunta a idade
+      print("Escolha uma opção do menu")
 
-  lista.append(pessoas.copy())#incorpora a o dikcionario a nova lista de pessoas
+def cadastrar():
+  while True: 
+    pessoas['nome'] = input('Digite o nome: ').upper()#o dicionario na posição nome recebe um input
 
-  while True:    # novo laço par tratar a resposta sim ou não
-    stop=input('\nDeseja cadatrar mais um candidato S/N: ').upper()[0]#usando essemetgodo sepoaramos a primeira letra ou posição [0]
-    if stop in 'S/N':
-      break #par ao laço de repetição local
-      print('Responda "S" ou "N":')
-  if stop == 'N':
-    break#para o laço de repetição principal e passa para o proximo comando
-print('-'*30)
-print('\nLista de pessoa(s) cadastrada(s)')
-for p in lista:
-  for k,v in p.items():
-    print(f'{k}={v}' ,end=" ")
-print()
+    while True:
+      pessoas['sexo'] = input('Digite o sexo da pessoa M/F:').upper()[0]
+      if pessoas['sexo'] in 'F/M':#abreviação para tratar a entrada(se pessoa naposiç~~ao sexo contem as iniciais m ou f )
+        break 
+      else:
+        print('Escolha entre as opções M/F: ')
+    
+    while True:
+      try:
+        pessoas['idade'] =int(input('Em qual ano nasceu?: '))
+        pessoas['idade']=(2024-pessoas['idade'])#calculo da idade do candidato par armazenar apena a idade
+        if pessoas['idade']> 0 and pessoas['idade'] <=120:
+          break
+        else:
+          print("verifique o ano de nascimento")
+          continue
+      except ValueError:
+        print('Digite um valor numerico: ')
+        continue
+    
+    inserir_pessoa(cursor,conectar,pessoas)
+
+    while True:   
+      stop=input('\nDeseja cadatrar mais um candidato S/N: ').upper()[0]#usando esse metodo separamos a primeira letra ou posição [0]
+      if stop in 'S/N':
+        break 
+    if stop == 'N':
+      break
 
 
-print('Cadastramos {} pessoas'.format(len(lista)))#faz aleitura de tgoda o lista e traz o tamanho com todas as variaveis
-#print(f'cadastramos{len(lista)} pessoas')
-media= soma/len(lista)#media recebe a soma dividida pela le de pessoas no posição nome, uma matematica basica
-print('\nA media de idade é {:5.2f}'.format(media))#media fornatada com 5 numero e duas casas decimais ":5.2f"
-#print(f'A media de idade é {(media)}')3observe que ha uma maneira de trazer os valores da veriave usando o .format e sua abrevialçao
+#Inicio do sistema
 
-print('\nA(s) mulher(es) cadastrada(s): ',end =" ")#o ',end=""nao deia quebra a linha
-for p in lista: # necessario ler toda a lista e sepaar o sexo
-  if p['sexo']== 'F': #ler toda alista de 'p' na posição 'sexo', se que tem "F" como primeira letra
-    print(f'{p["nome"]}',end='  ') #foi feito a impressão direta de "p" na posição nome 'p' e o dicionario que contem a pessoa que recebe o nome
-print()
-print('\nAs pessoas que estão acima da media de idade são:')
-for p in lista:#ler  lista e tras as idades acima da media
-  if p['idade'] >= media:
-    for key, value in p.items():#as chave e os valores do item
-      print(f'{key} = {value};' ,end=" ") #print com format de chave e valores dos dicionarios
+conectar,cursor=conexao()
+criar_tabela(cursor)
+
+while True:
+  menu=input("\nEscolha uma das Opçoes:\n0-Sair\n1-Cadastrar\n2-Listar por Sexo\n3-Media de idade\n4-Listar por ID\n5-Total de pessoas\n>>")
+  if menu == "0":
+    cursor.close()
+    conectar.close()
+    break
+  elif menu== "1":
+    cadastrar()
+  elif menu== "2":
+    print('\nNomes das mulheres cadastradas:')
+    for nome in lista_sexo(cursor, 'F'):
+        print(nome[0])
+    print('\n\nNomes dos homens cadastrados:')
+    for nome in lista_sexo(cursor, 'M'):
+        print(nome[0])
+  elif menu =="3":
+    media_idade = media_idade(cursor)
+    print(f'\n\nMédia de idade: {media_idade:.2f}')
+  elif menu=="4":
+    id_por_pessoa()
+  elif menu=="5":
+    #contar=contar_pessoa(cursor)
+    #print(f"Total de pessoas cadastradas: {contar}")
+    print(f'\nTotal de pessoas cadastradas: {contar_pessoa(cursor)} pessoas')
