@@ -1,3 +1,4 @@
+"""Cadastro simplificado de pessoas usando o banco de dados MySQL """
 import mysql.connector 
 
 pessoas=dict()#criado o dicionario que deve receber as variaveis
@@ -8,7 +9,6 @@ def conexao():
     user="root",
     password="root",
     database="cadastro_pessoas")
-  
   cursor = conectar.cursor()
   return conectar,cursor
 
@@ -50,9 +50,8 @@ def id_pessoa(cursor, id_pessoa):
 def id_por_pessoa():
   while True:
     try:
-      pessoa_id = int(input('\n0-Sair\ndigite o ID da pessoa para ver todas as informações: '))
+      pessoa_id = int(input('\n0-Sair\ndigite o ID da pessoa para ver todas as informacoes: '))
       if pessoa_id == 0:
-        
           break
       pessoa = id_pessoa(cursor, pessoa_id)
       if pessoa:
@@ -64,7 +63,7 @@ def id_por_pessoa():
       else:
           print(f'Pessoa com ID {pessoa_id} não encontrada.')
     except ValueError:
-      print("Escolha uma opção do menu")
+      print("Escolha uma opcao do menu")
 
 def cadastrar():
   while True: 
@@ -75,7 +74,7 @@ def cadastrar():
       if pessoas['sexo'] in 'F/M':#abreviação para tratar a entrada(se pessoa naposiç~~ao sexo contem as iniciais m ou f )
         break 
       else:
-        print('Escolha entre as opções M/F: ')
+        print('Escolha entre as opcaes M/F: ')
     
     while True:
       try:
@@ -106,7 +105,7 @@ conectar,cursor=conexao()
 criar_tabela(cursor)
 
 while True:
-  menu=input("\nEscolha uma das Opçoes:\n0-Sair\n1-Cadastrar\n2-Listar por Sexo\n3-Media de idade\n4-Listar por ID\n5-Total de pessoas\n>>")
+  menu=input("\nEscolha uma das Opcoes:\n0-Sair\n1-Cadastrar\n2-Listar por Sexo\n3-Media de idade\n4-Listar por ID\n5-Total de pessoas\n>>")
   if menu == "0":
     cursor.close()
     conectar.close()
@@ -127,5 +126,5 @@ while True:
     id_por_pessoa()
   elif menu=="5":
     #contar=contar_pessoa(cursor)
-    #print(f"Total de pessoas cadastradas: {contar}")
+    #print(f"\nTotal de pessoas cadastradas: {contar} pessoas")
     print(f'\nTotal de pessoas cadastradas: {contar_pessoa(cursor)} pessoas')
