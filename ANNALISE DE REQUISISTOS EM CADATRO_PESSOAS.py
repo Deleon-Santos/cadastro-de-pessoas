@@ -1,6 +1,7 @@
 """Cadastro simplificado de pessoas usando o banco de dados MySQL """
 import mysql.connector 
 
+
 pessoas=dict()#criado o dicionario que deve receber as variaveis
 
 def conexao():
