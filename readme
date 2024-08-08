@@ -1,14 +1,14 @@
 # Documentação do Sistema de Cadastro de Pessoas
 
 ## Sumário
-1. [Introdução](#introdução)
-2. [Requisitos do Sistema](#requisitos-do-sistema)
-3. [Instalação](#instalação)
-4. [Estrutura do Código](#estrutura-do-código)
-5. [Descrição das Funções](#descrição-das-funções)
-6. [Fluxo de Execução](#fluxo-de-execução)
-7. [Exemplo de Uso](#exemplo-de-uso)
-8. [Conclusão](#conclusão)
+- [Introdução](#introdução)
+- [Requisitos do Sistema](#requisitos-do-sistema)
+- [Instalação](#instalação)
+- [Estrutura do Código](#estrutura-do-código)
+- [Descrição das Funções](#descrição-das-funções)
+- [Fluxo de Execução](#fluxo-de-execução)
+- [Exemplo de Uso](#exemplo-de-uso)
+- [Conclusão](#conclusão)
 
 ## Introdução
 Este sistema é um cadastro simplificado de pessoas usando o banco de dados MySQL. Ele permite armazenar, consultar e manipular dados de pessoas, como nome, sexo e idade.
@@ -22,71 +22,3 @@ Para instalar a biblioteca MySQL Connector, use o seguinte comando:
 
 ```sh
 pip install mysql-connector-python
-```
-  ## Descrição das Funções
-
-### conexao()
-Estabelece a conexão com o banco de dados MySQL e retorna a conexão e o cursor.
-
-### criar_tabela(cursor)
-Cria o banco de dados `cadastro_pessoas` e a tabela `pessoas` se não existirem.
-
-### inserir_pessoa(cursor, conectar, pessoa)
-Insere uma nova pessoa na tabela `pessoas` com os dados fornecidos.
-
-### contar_pessoa(cursor)
-Retorna o número total de pessoas cadastradas na tabela `pessoas`.
-
-### lista_sexo(cursor, sexo)
-Retorna uma lista de nomes de pessoas cadastradas filtradas pelo sexo.
-
-### media_idade(cursor)
-Calcula e retorna a média de idade das pessoas cadastradas.
-
-### id_pessoa(cursor, id_pessoa)
-Retorna os dados de uma pessoa específica com base no ID fornecido.
-
-### id_por_pessoa()
-Interage com o usuário para consultar os dados de uma pessoa específica pelo ID.
-
-### cadastrar()
-Interage com o usuário para cadastrar novas pessoas, incluindo validação de entradas.
-
-## Fluxo de Execução
-
-1. O sistema se conecta ao banco de dados e cria a tabela se necessário.
-2. Exibe um menu para o usuário com opções de cadastrar, listar e consultar pessoas.
-3. Baseado na opção escolhida, o sistema executa a função correspondente.
-4. O usuário pode sair do sistema a qualquer momento selecionando a opção "0".
-
-  ## Exemplo de Uso
-
-### Menu Inicial
-
-```plaintext
-Escolha uma das Opções:
-0-Sair
-1-Cadastrar
-2-Listar por Sexo
-3-Média de Idade
-4-Listar por ID
-5-Total de Pessoas
->>
-  ```
-### Cadastro de pessoas
-```
-  Digite o nome: João Silva
-Digite o sexo da pessoa M/F: M
-Em qual ano nasceu?: 1985
-Deseja cadastrar mais um candidato S/N: N
-```
-### Busca por Sexo
-  
-  ```Nomes das mulheres cadastradas:
-Maria Oliveira
-
-Nomes dos homens cadastrados:
-João Silva
-  ```
-
-  
