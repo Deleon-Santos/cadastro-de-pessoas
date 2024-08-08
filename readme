@@ -20,5 +20,3 @@ Este sistema é um cadastro simplificado de pessoas usando o banco de dados MySQ
 ## Instalação
 Para instalar a biblioteca MySQL Connector, use o seguinte comando:
 
-```sh
-pip install mysql-connector-python
