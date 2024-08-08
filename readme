@@ -31,7 +31,7 @@ Estabelece a conexão com o banco de dados MySQL e retorna a conexão e o cursor
 ### criar_tabela(cursor)
 Cria o banco de dados `cadastro_pessoas` e a tabela `pessoas` se não existirem.
 
-### inserir_pessoa(cursor, conectar, pessoa)`
+### inserir_pessoa(cursor, conectar, pessoa)
 Insere uma nova pessoa na tabela `pessoas` com os dados fornecidos.
 
 ### contar_pessoa(cursor)
