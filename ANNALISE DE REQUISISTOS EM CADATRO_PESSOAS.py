@@ -57,10 +57,7 @@ def id_por_pessoa():
       pessoa = id_pessoa(cursor, pessoa_id)
       if pessoa:
           print(f'\nInformações da pessoa com ID {pessoa_id}:')
-          print(f'ID: {pessoa[0]}')
-          print(f'Nome: {pessoa[1]}')
-          print(f'Sexo: {pessoa[2]}')
-          print(f'Idade: {pessoa[3]}')
+          print(f'ID: {pessoa[0]}\nNome: {pessoa[1]}\nSexo: {pessoa[2]}\nSexo: {pessoa[2]}\nIdade: {pessoa[3]}')     
       else:
           print(f'Pessoa com ID {pessoa_id} não encontrada.')
     except ValueError:
@@ -103,7 +100,7 @@ def cadastrar():
 #Inicio do sistema
 
 conectar,cursor=conexao()
-criar_tabela(cursor)
+#criar_tabela(cursor)
 
 while True:
   menu=input("\nEscolha uma das Opcoes:\n0-Sair\n1-Cadastrar\n2-Listar por Sexo\n3-Media de idade\n4-Listar por ID\n5-Total de pessoas\n>>")
@@ -126,6 +123,4 @@ while True:
   elif menu=="4":
     id_por_pessoa()
   elif menu=="5":
-    #contar=contar_pessoa(cursor)
-    #print(f"\nTotal de pessoas cadastradas: {contar} pessoas")
     print(f'\nTotal de pessoas cadastradas: {contar_pessoa(cursor)} pessoas')
