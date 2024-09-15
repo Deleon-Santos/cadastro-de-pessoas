@@ -1,4 +1,4 @@
-# Documentação de Software: Cadastro Simplificado de Pessoas com MySQL
+# Documentação de Software: Cadastro Simplificado de Pessoas com MySQL.
 
 ## Descrição Geral
 Este projeto visa a criação de um sistema simples de cadastro de pessoas utilizando o banco de dados MySQL para armazenar informações. O sistema é implementado em Python, utilizando a biblioteca `mysql.connector` para conectar e manipular o banco de dados. Ele oferece funcionalidades para cadastrar, listar e consultar pessoas no banco de dados, além de calcular a média de idade e listar pessoas por sexo.
